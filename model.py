@@ -66,7 +66,7 @@ class vggnet(nn.Module):
             nn.MaxPool2d(kernel_size = 2, stride = 2))
         self.fc = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(7*7*512, 4096),
+            nn.Linear(1*1*512, 4096),
             nn.ReLU())
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
@@ -90,7 +90,6 @@ class vggnet(nn.Module):
         out = self.layer12(out)
         out = self.layer13(out)
         out = out.reshape(out.size(0), -1)
-        print(out.shape)
         out = self.fc(out)
         out = self.fc1(out)
         out = self.fc2(out)
