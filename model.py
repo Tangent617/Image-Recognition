@@ -89,7 +89,7 @@ class vggnet(nn.Module):
         out = self.layer11(out)
         out = self.layer12(out)
         out = self.layer13(out)
-        out = out.reshape(-1, out.size(0))
+        out = out.reshape(out.size(0), -1)
         print(out.shape)
         out = self.fc(out)
         out = self.fc1(out)
