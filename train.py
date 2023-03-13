@@ -17,7 +17,7 @@ from datasets import dataset
 from model import vggnet
 from loss import CrossEntropyLoss
 from flops import print_model_parm_flops
-from transfroms import Padding, RandomCrop, RandomFlip
+from transfroms import Padding, RandomCrop, RandomFlip, Cutout
 
 
 parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
@@ -67,6 +67,7 @@ def Train():
                RandomCrop(size=32),
                RandomFlip(),
                transforms.ToTensor(),
+               Cutout(8),
                normalize,
             ])
    transform_test = transforms.Compose([

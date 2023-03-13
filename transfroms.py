@@ -7,7 +7,7 @@ import random
 # TODO: implementation transformations for task3;
 # You cannot directly use them from pytorch, but you are free to use functions from cv2 and PIL
 
-#ref: https://github.com/Skylark0924/Machine-Learning-is-ALL-You-Need/blob/766a50ba07c21f6e9f6c8c48a819f6e075e97b78/CV_VGG/transfroms.py
+# ref: https://github.com/Skylark0924/Machine-Learning-is-ALL-You-Need/blob/766a50ba07c21f6e9f6c8c48a819f6e075e97b78/CV_VGG/transfroms.py
 class Padding(object):
     def __init__(self, padding):
         self.padding = padding
@@ -50,3 +50,29 @@ class RandomFlip(object):
             new_img = img.transpose(PIL.Image.FLIP_LEFT_RIGHT)
 
         return new_img
+
+
+class Cutout(object):
+    def __init__(self, length):
+        self.length = length
+
+    def __call__(self, img, **kwargs):
+        _, w, h = img.shape
+        mask = np.ones((h, w), np.float32)
+
+        for n in range(self.n_holes):
+            y = np.random.randint(h)  # 返回随机数/数组(整数)
+            x = np.random.randint(w)
+
+            y1 = np.clip(y - self.length // 2, 0, h)
+            y2 = np.clip(y + self.length // 2, 0, h)
+            x1 = np.clip(x - self.length // 2, 0, w)
+            x2 = np.clip(x + self.length // 2, 0, w)
+
+            mask[y1: y2, x1: x2] = 0.
+
+        mask = torch.from_numpy(mask)
+        mask = mask.expand_as(img)
+        img = img * mask
+
+        return img
