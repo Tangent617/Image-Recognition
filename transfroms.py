@@ -60,16 +60,15 @@ class Cutout(object):
         _, w, h = img.shape
         mask = np.ones((h, w), np.float32)
 
-        for n in range(self.n_holes):
-            y = np.random.randint(h)  # 返回随机数/数组(整数)
-            x = np.random.randint(w)
+        y = np.random.randint(h)  # 返回随机数/数组(整数)
+        x = np.random.randint(w)
 
-            y1 = np.clip(y - self.length // 2, 0, h)
-            y2 = np.clip(y + self.length // 2, 0, h)
-            x1 = np.clip(x - self.length // 2, 0, w)
-            x2 = np.clip(x + self.length // 2, 0, w)
+        y1 = np.clip(y - self.length // 2, 0, h)
+        y2 = np.clip(y + self.length // 2, 0, h)
+        x1 = np.clip(x - self.length // 2, 0, w)
+        x2 = np.clip(x + self.length // 2, 0, w)
 
-            mask[y1: y2, x1: x2] = 0.
+        mask[y1: y2, x1: x2] = 0.
 
         mask = torch.from_numpy(mask)
         mask = mask.expand_as(img)
